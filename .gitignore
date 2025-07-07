@@ -43,3 +43,19 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Variables de entorno y configuración sensible
+.env
+.env.local
+.env.production
+.env.development
+
+# Archivos de configuración local
+config.json
+secrets.json
+
+# Build artifacts para Windows
+/dist/
+/build/windows/
+*.exe
+*.msix

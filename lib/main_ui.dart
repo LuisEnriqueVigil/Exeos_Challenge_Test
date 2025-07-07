@@ -5,43 +5,37 @@ import 'package:exeos_network_challenge/src/domain/controllers/coins/coins_contr
 import 'package:exeos_network_challenge/src/domain/controllers/qr/qr_controller.dart';
 import 'package:exeos_network_challenge/src/domain/routes/routes_app.dart';
 import 'package:exeos_network_challenge/src/domain/routes/routes_string.dart';
-import 'package:exeos_network_challenge/src/windows/system_tray_manager.dart';
 import 'package:exeos_network_challenge/src/windows/window_config.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:window_manager/window_manager.dart';
 
-void main(List<String> args) async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Verificar si estamos en Windows y en modo tray
+  // Solo configurar ventana si estamos en Windows
   if (Platform.isWindows) {
-    // Si se ejecuta con argumento --tray, inicia el proceso de bandeja
-    if (args.contains('--tray')) {
-      await SystemTrayManager.initialize();
-      return; // No ejecutar la UI principal
-    }
-    
-    // Si es el proceso principal de UI, configurar la ventana
-    await WindowConfig.initialize();
+    await windowManager.ensureInitialized();
+    await WindowConfig.setupUIWindow();
   }
   
-  runApp(const MyApp());
+  runApp(const ExeosUIApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class ExeosUIApp extends StatelessWidget {
+  const ExeosUIApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create:  (_)=> CoinGeckoApi()),
-        ChangeNotifierProvider(create: (_)=> PinController()),
-        ChangeNotifierProvider(create: (_)=> QrControllers()),
-        ChangeNotifierProvider(create: (_)=> CoinsController())
+        ChangeNotifierProvider(create: (_) => CoinGeckoApi()),
+        ChangeNotifierProvider(create: (_) => PinController()),
+        ChangeNotifierProvider(create: (_) => QrControllers()),
+        ChangeNotifierProvider(create: (_) => CoinsController())
       ],
       child: MaterialApp(
-        title: 'Exeos Scann',
+        title: 'Exeos Network - Crypto Scanner',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
           useMaterial3: true,
