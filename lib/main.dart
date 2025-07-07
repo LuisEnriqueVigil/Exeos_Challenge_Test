@@ -1,5 +1,6 @@
 import 'package:exeos_network_challenge/src/data/apis/coin_gecko_api.dart';
 import 'package:exeos_network_challenge/src/domain/controllers/auth/pin_controller.dart';
+import 'package:exeos_network_challenge/src/domain/controllers/coins/coins_controller.dart';
 import 'package:exeos_network_challenge/src/domain/controllers/qr/qr_controller.dart';
 import 'package:exeos_network_challenge/src/domain/routes/routes_app.dart';
 import 'package:exeos_network_challenge/src/domain/routes/routes_string.dart';
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create:  (_)=> CoinGeckoApi()),
         ChangeNotifierProvider(create: (_)=> PinController()),
         ChangeNotifierProvider(create: (_)=> QrControllers()),
+        ChangeNotifierProvider(create: (_)=> CoinsController())
       ],
       child: MaterialApp(
         title: 'Exeos Scann',

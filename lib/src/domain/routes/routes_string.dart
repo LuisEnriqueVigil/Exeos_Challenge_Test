@@ -6,6 +6,8 @@ class RoutesName {
   static const String splashScreen =  "/";
   static const String pinScreen = "/pin";
   static const String qrScannerScreen = "/qrScanner";
+  static const String loadingQrScannerScreen = "/loadingQrScanner";
+  static const String cryptoListScreen = "/cryptoListScreen";
   
   factory RoutesName() {
     return _routesName;
