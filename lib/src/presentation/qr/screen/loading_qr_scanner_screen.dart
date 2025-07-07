@@ -1,5 +1,7 @@
 import 'package:exeos_network_challenge/src/domain/controllers/coins/coins_controller.dart';
 import 'package:exeos_network_challenge/src/domain/routes/routes_string.dart';
+import 'package:exeos_network_challenge/src/presentation/qr/screen/animation_crentral_of_screen_widget_loading_qr_scanner_screen.dart';
+import 'package:exeos_network_challenge/src/presentation/qr/widgets/animate_text_search_widget_loading_scanner_screen.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
@@ -170,119 +172,17 @@ class _LoadingQrScannerScreenState extends State<LoadingQrScannerScreen>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Título animado
-                  AnimatedBuilder(
-                    animation: _fadeAnimation,
-                    builder: (context, child) {
-                      return Opacity(
-                        opacity: _fadeAnimation.value,
-                        child: Text(
-                          'Buscando...',
-                          style: theme.textTheme.headlineMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: theme.colorScheme.primary,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                  AnimateTextSearchingWidgetLoadingQrScannerScreen(fadeAnimation: _fadeAnimation, theme: theme),
 
                   const SizedBox(height: 40),
 
                   // Área de animación principal
-                  SizedBox(
-                    height: 200,
-                    width: 200,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        // Círculo de fondo pulsante
-                        AnimatedBuilder(
-                          animation: _pulseAnimation,
-                          builder: (context, child) {
-                            return Transform.scale(
-                              scale: _pulseAnimation.value,
-                              child: Container(
-                                width: 120,
-                                height: 120,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: theme.colorScheme.primary.withAlpha(40),
-                                  border: Border.all(
-                                    color: theme.colorScheme.primary.withAlpha(40),
-                                    width: 2,
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-
-                        // Moneda animada (rebote + rotación)
-                        AnimatedBuilder(
-                          animation: Listenable.merge([_bounceAnimation, _rotationAnimation]),
-                          builder: (context, child) {
-                            return Transform.translate(
-                              offset: Offset(0, _bounceAnimation.value),
-                              child: Transform.rotate(
-                                angle: _rotationAnimation.value,
-                                child: Container(
-                                  width: 80,
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                      colors: [
-                                        Colors.amber.shade300,
-                                        Colors.amber.shade600,
-                                        Colors.orange.shade500,
-                                      ],
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: theme.colorScheme.primary.withAlpha(40),
-                                        blurRadius: 15,
-                                        offset: const Offset(0, 5),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Icon(
-                                    Icons.monetization_on,
-                                    size: 50,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-
-                        // Partículas flotantes alrededor
-                        ...List.generate(6, (index) {
-                          return AnimatedBuilder(
-                            animation: _rotationController,
-                            builder: (context, child) {
-                              final angle = (_rotationAnimation.value + (index * math.pi / 3));
-                              final x = math.cos(angle) * 80;
-                              final y = math.sin(angle) * 80;
-                              
-                              return Transform.translate(
-                                offset: Offset(x, y),
-                                child: Container(
-                                  width: 8,
-                                  height: 8,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: theme.colorScheme.primary.withAlpha(40),
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        }),
-                      ],
-                    ),
+                  AnimationCentralOfScreenWidgetLoadingQrScannerScreen(
+                    pulseAnimation: _pulseAnimation, 
+                    theme: theme, 
+                    bounceAnimation: _bounceAnimation, 
+                    rotationAnimation: _rotationAnimation, 
+                    rotationController: _rotationController
                   ),
 
                   const SizedBox(height: 40),
