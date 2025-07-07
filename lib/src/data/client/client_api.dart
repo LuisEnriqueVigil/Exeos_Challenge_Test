@@ -11,7 +11,7 @@ class ApiClient {
   ApiClient._internal();
 
   // Configuración base
-  static const String _defaultBaseUrl = 'https://api.example.com/v1';
+  static const String _defaultBaseUrl = 'https://api.coingecko.com/api/v3';
   static const Duration _defaultTimeout = Duration(seconds: 30);
   
   String _baseUrl = _defaultBaseUrl;
@@ -41,8 +41,7 @@ class ApiClient {
     
     if (additionalHeaders != null) {
       _defaultHeaders.addAll(additionalHeaders);
-    }
-    
+    }    
     debugPrint('ApiClient configurado:');
     debugPrint('Base URL: $_baseUrl');
     debugPrint('Token: ${_bearerToken != null ? "Configurado" : "No configurado"}');
@@ -65,12 +64,11 @@ class ApiClient {
   Map<String, String> _buildHeaders({Map<String, String>? additionalHeaders}) {
     final headers = Map<String, String>.from(_defaultHeaders);
     
-    // Agregar Bearer token si existe
     if (_bearerToken != null && _bearerToken!.isNotEmpty) {
-      headers['Authorization'] = 'Bearer $_bearerToken';
+      headers['x-cg-demo-api-key'] = '$_bearerToken';
+      headers['accept'] ='application/json'; 
     }
     
-    // Agregar headers adicionales
     if (additionalHeaders != null) {
       headers.addAll(additionalHeaders);
     }
@@ -84,11 +82,24 @@ class ApiClient {
       return endpoint; // URL absoluta
     }
     
-    // Asegurar que no haya doble slash
     final cleanEndpoint = endpoint.startsWith('/') ? endpoint.substring(1) : endpoint;
     final cleanBaseUrl = _baseUrl.endsWith('/') ? _baseUrl.substring(0, _baseUrl.length - 1) : _baseUrl;
     
     return '$cleanBaseUrl/$cleanEndpoint';
+  }
+
+  // Construir URL con query parameters dinámicos
+  String buildUrlWithParams(String endpoint, Map<String, dynamic>? queryParams) {
+    String baseUrl = buildUrl(endpoint);
+    
+    if (queryParams?.isEmpty ?? true) return baseUrl;
+    
+    String queryString = queryParams!.entries
+        .where((entry) => entry.value != null)
+        .map((entry) => '${entry.key}=${Uri.encodeComponent(entry.value.toString())}')
+        .join('&');
+    
+    return queryString.isEmpty ? baseUrl : '$baseUrl?$queryString';
   }
 
   // Cliente HTTP para usar en otros servicios

@@ -1,4 +1,4 @@
-import 'package:exeos_network_challenge/src/presentation/coins/screen/crypto_list_screen.dart';
+import 'package:exeos_network_challenge/src/domain/models/currency_model.dart';
 import 'package:flutter/material.dart';
 
 
@@ -15,7 +15,7 @@ class CryptoCardWidgetOnCryptoListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isPositive = crypto.priceChange >= 0;
+    final isPositive = crypto.currentPrice >= 0;
     
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -39,11 +39,15 @@ class CryptoCardWidgetOnCryptoListScreen extends StatelessWidget {
                     color: Colors.blue.withAlpha(30),
                     borderRadius: BorderRadius.circular(24),
                   ),
-                  child: Icon(
-                    crypto.icon,
-                    color: Colors.blue,
-                    size: 28,
-                  ),
+                  child: Image(
+                    height: 50.0,width: 50.0,
+                    fit: BoxFit.contain,
+                    image: NetworkImage(
+                      crypto.image.isNotEmpty 
+                          ? crypto.image 
+                          : 'https://via.placeholder.com/48',
+                    ),
+                    ) 
                 ),
                 
                 const SizedBox(width: 16),
@@ -79,7 +83,7 @@ class CryptoCardWidgetOnCryptoListScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      '\$${crypto.price.toStringAsFixed(crypto.price < 1 ? 3 : 2)}',
+                      '\$${crypto.currentPrice.toStringAsFixed(crypto.currentPrice < 1 ? 3 : 2)}',
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -108,7 +112,7 @@ class CryptoCardWidgetOnCryptoListScreen extends StatelessWidget {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            '${isPositive ? '+' : ''}${crypto.priceChange.toStringAsFixed(2)}%',
+                            '${isPositive ? '+' : ''}${crypto.priceChangePercentage24H.toStringAsFixed(2)}%',
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,

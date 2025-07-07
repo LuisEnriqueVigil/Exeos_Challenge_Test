@@ -1,6 +1,9 @@
+import 'package:exeos_network_challenge/src/domain/controllers/coins/coins_controller.dart';
 import 'package:exeos_network_challenge/src/domain/routes/routes_string.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
+
+import 'package:provider/provider.dart';
 
 class LoadingQrScannerScreen extends StatefulWidget {
   final String? searchQuery;
@@ -105,8 +108,10 @@ class _LoadingQrScannerScreenState extends State<LoadingQrScannerScreen>
 
     try {
       // Realizar la búsqueda real - el tiempo que tome será el real del API
-      await widget.searchFunction;
-
+      
+      CoinsController coinsController = Provider.of<CoinsController>(context,listen: false);
+      coinsController.allCryptos = await widget.searchFunction;
+      
       // Retornar a la pantalla anterior con el resultado real
       if (mounted) {
         Navigator.pushNamed(
@@ -151,9 +156,9 @@ class _LoadingQrScannerScreenState extends State<LoadingQrScannerScreen>
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    theme.colorScheme.primary.withOpacity(0.1),
+                    theme.colorScheme.primary.withAlpha(40),
                     theme.colorScheme.surface,
-                    theme.colorScheme.secondary.withOpacity(0.05),
+                    theme.colorScheme.secondary.withAlpha(40),
                   ],
                 ),
               ),
@@ -201,9 +206,9 @@ class _LoadingQrScannerScreenState extends State<LoadingQrScannerScreen>
                                 height: 120,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: theme.colorScheme.primary.withOpacity(0.1),
+                                  color: theme.colorScheme.primary.withAlpha(40),
                                   border: Border.all(
-                                    color: theme.colorScheme.primary.withOpacity(0.3),
+                                    color: theme.colorScheme.primary.withAlpha(40),
                                     width: 2,
                                   ),
                                 ),
@@ -236,7 +241,7 @@ class _LoadingQrScannerScreenState extends State<LoadingQrScannerScreen>
                                     ),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: theme.colorScheme.primary.withOpacity(0.3),
+                                        color: theme.colorScheme.primary.withAlpha(40),
                                         blurRadius: 15,
                                         offset: const Offset(0, 5),
                                       ),
@@ -269,7 +274,7 @@ class _LoadingQrScannerScreenState extends State<LoadingQrScannerScreen>
                                   height: 8,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: theme.colorScheme.primary.withOpacity(0.6),
+                                    color: theme.colorScheme.primary.withAlpha(40),
                                   ),
                                 ),
                               );
@@ -294,7 +299,7 @@ class _LoadingQrScannerScreenState extends State<LoadingQrScannerScreen>
                               Text(
                                 'Buscando:',
                                 style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: theme.colorScheme.onSurface.withOpacity(0.7),
+                                  color: theme.colorScheme.onSurface.withAlpha(40),
                                 ),
                               ),
                               const SizedBox(height: 8),
@@ -304,10 +309,10 @@ class _LoadingQrScannerScreenState extends State<LoadingQrScannerScreen>
                                   vertical: 8,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: theme.colorScheme.surfaceVariant.withOpacity(0.5),
+                                  color: theme.colorScheme.surfaceVariant.withAlpha(40),
                                   borderRadius: BorderRadius.circular(20),
                                   border: Border.all(
-                                    color: theme.colorScheme.outline.withOpacity(0.3),
+                                    color: theme.colorScheme.outline.withAlpha(40),
                                   ),
                                 ),
                                 child: Text(
@@ -333,7 +338,7 @@ class _LoadingQrScannerScreenState extends State<LoadingQrScannerScreen>
                       animation: _rotationController,
                       builder: (context, child) {
                         return LinearProgressIndicator(
-                          backgroundColor: theme.colorScheme.outline.withOpacity(0.2),
+                          backgroundColor: theme.colorScheme.outline.withAlpha(40),
                           valueColor: AlwaysStoppedAnimation<Color>(
                             theme.colorScheme.primary,
                           ),
@@ -354,7 +359,7 @@ class _LoadingQrScannerScreenState extends State<LoadingQrScannerScreen>
                         child: Text(
                           'Esto puede tomar unos segundos...',
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.colorScheme.onSurface.withOpacity(0.6),
+                            color: theme.colorScheme.onSurface.withAlpha(40),
                           ),
                         ),
                       );
@@ -378,10 +383,10 @@ class _LoadingQrScannerScreenState extends State<LoadingQrScannerScreen>
                         onPressed: widget.onCancel,
                         icon: Icon(
                           Icons.close,
-                          color: theme.colorScheme.onSurface.withOpacity(0.7),
+                          color: theme.colorScheme.onSurface.withAlpha(40),
                         ),
                         style: IconButton.styleFrom(
-                          backgroundColor: theme.colorScheme.surface.withOpacity(0.8),
+                          backgroundColor: theme.colorScheme.surface.withAlpha(40),
                           foregroundColor: theme.colorScheme.onSurface,
                         ),
                       ),

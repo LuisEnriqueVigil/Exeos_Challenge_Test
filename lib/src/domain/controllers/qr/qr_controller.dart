@@ -1,6 +1,8 @@
 
-
+import 'package:exeos_network_challenge/src/data/apis/coin_gecko_api.dart';
+import 'package:exeos_network_challenge/src/presentation/qr/screen/loading_qr_scanner_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 class QrControllers with ChangeNotifier{
@@ -43,19 +45,69 @@ class QrControllers with ChangeNotifier{
 
   // Método para abrir el scanner de cámara
   void openQRScanner(BuildContext context) async {
+    CoinGeckoApi coinGeckoApi = Provider.of<CoinGeckoApi>(context,listen: false);
     try {
-      final result = await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const SimpleBarcodeScannerPage(),
-        ),
-      );
-      debugPrint("result: $result");
-    } catch (e) {
+      final result =  await SimpleBarcodeScanner.scanBarcode(
+     context,
+      barcodeAppBar: const BarcodeAppBar(
+        appBarTitle: 'Escanear QR',
+        centerTitle: true,
+        enableBackButton: true,
+      ),
+      isShowFlashIcon: true,
+      delayMillis: 2000,
+      cameraFace: CameraFace.back,
+    );
+    
+    debugPrint("QR Result: $result");
+    if (result is String && result != '-1') {
+      debugPrint("QR Result: $result");
+      // Procesar resultado exitoso
+      _codeForSearchController = result;      
+      notifyListeners();
       if(context.mounted){
-        showErrorSnackBar(message: 'Error al abrir el scanner: ${e.toString()}',context: context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Informacion encontrada'),
+              backgroundColor: Colors.green,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+      }
+      if(context.mounted){
+       await Navigator.push(
+         context,
+         MaterialPageRoute(
+           builder: (context) => LoadingQrScannerScreen(
+             searchQuery: _codeForSearchController,
+             searchFunction:coinGeckoApi.getListCoinsWithValueVsCurrency(
+               endpoint:'/coins/markets',
+               perpage: 5,
+               page: 0
+             ), // Función de búsqueda real
+             onCancel: () => Navigator.pop(context, {'cancelled': true}),
+           ),
+         ),
+       );
+       if(context.mounted){
+           ScaffoldMessenger.of(context).showSnackBar(
+             const SnackBar(
+               content: Text('Informacion encontrada'),
+               backgroundColor: Colors.green,
+               behavior: SnackBarBehavior.floating,
+             ),
+           );
+       }
       }
     }
+  } catch (e) {
+    if (context.mounted) {
+      showErrorSnackBar(
+        message: 'Error al abrir el scanner: ${e.toString()}',
+        context: context,
+      );
+    }
+  }
   }
 
   

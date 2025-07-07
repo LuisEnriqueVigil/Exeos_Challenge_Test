@@ -72,14 +72,18 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
                 onSearchPressed: (value) async {
                     FocusScope.of(context).unfocus();
                     // Obtener la instancia del CoinGeckoApi
-                    final coinGeckoApi = CoinGeckoApi();
+                    final coinGeckoApi = context.read<CoinGeckoApi>();
                     // Navegar a la pantalla de loading con la función de búsqueda real
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => LoadingQrScannerScreen(
                           searchQuery: value,
-                          searchFunction:coinGeckoApi.makeGetRequest('/simple/price?ids=bitcoin&vs_currencies=usd'), // Función de búsqueda real
+                          searchFunction:coinGeckoApi.getListCoinsWithValueVsCurrency(
+                            endpoint:'/coins/markets',
+                            perpage: 5,
+                            page: 0
+                          ), // Función de búsqueda real
                           onCancel: () => Navigator.pop(context, {'cancelled': true}),
                         ),
                       ),
