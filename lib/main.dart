@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:exeos_network_challenge/src/config/env_config.dart';
 import 'package:exeos_network_challenge/src/data/apis/coin_gecko_api.dart';
 import 'package:exeos_network_challenge/src/domain/controllers/auth/pin_controller.dart';
 import 'package:exeos_network_challenge/src/domain/controllers/coins/coins_controller.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main(List<String> args) async {
+  await EnvironmentBase.initEnvironment(); 
   WidgetsFlutterBinding.ensureInitialized();
   
   // Verificar si estamos en Windows y en modo tray

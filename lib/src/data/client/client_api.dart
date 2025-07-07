@@ -1,3 +1,4 @@
+import 'package:exeos_network_challenge/src/config/env_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
@@ -11,8 +12,8 @@ class ApiClient {
   ApiClient._internal();
 
   // Configuración base
-  static const String _defaultBaseUrl = 'https://api.coingecko.com/api/v3';
-  static const Duration _defaultTimeout = Duration(seconds: 30);
+  static final String _defaultBaseUrl = EnvironmentBase.apiUrl;
+  static final Duration _defaultTimeout = Duration(seconds: int.parse(EnvironmentBase.duration));
   
   String _baseUrl = _defaultBaseUrl;
   String? _bearerToken;

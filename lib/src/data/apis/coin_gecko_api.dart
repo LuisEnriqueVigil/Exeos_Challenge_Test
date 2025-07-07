@@ -1,10 +1,11 @@
+import 'package:exeos_network_challenge/src/config/env_config.dart';
 import 'package:exeos_network_challenge/src/domain/models/currency_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../client/client_api.dart';
 
 class CoinGeckoApi with ChangeNotifier {
-  static const String _baseUrl = 'https://api.coingecko.com/api/v3';
+  static final String _baseUrl = EnvironmentBase.apiUrl;
   final ApiClient _apiClient = ApiClient();
 
   bool _loadingGetRequest = false;
@@ -44,7 +45,7 @@ class CoinGeckoApi with ChangeNotifier {
         'per_page': 5,
         'page': 0,
       });
-      _apiClient.setBearerToken("CG-5om8KsKynHcTsDR6SW4mhk33");
+      _apiClient.setBearerToken(EnvironmentBase.apiKey);
 
       debugPrint('CoinGecko GET: $url');
 

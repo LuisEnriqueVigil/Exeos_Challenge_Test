@@ -1,7 +1,7 @@
 # 🚀 Exeos Network - Crypto Scanner
 
 Una aplicación Flutter multiplataforma para escanear códigos QR y consultar información de criptomonedas usando la API de CoinGecko.
-
+PIN PARA ACCESO A APP: 2345
 ## 📱 Características
 
 - **Scanner QR/Código de barras** para múltiples plataformas
@@ -175,6 +175,8 @@ lib/
 │   │   └── routes/                    # Configuración de rutas
 │   ├── presentation/
 │   │   └── qr/                        # Pantallas y widgets
+        └── auth/                      # Pantallas y widgets
+        └── coins/                     # Pantallas y widgets
 │   └── windows/                       # Utilidades específicas Windows
 │       ├── process_launcher.dart      # Lanzador de procesos
 │       ├── system_tray_manager.dart   # Gestión de bandeja
